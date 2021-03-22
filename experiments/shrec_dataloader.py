@@ -21,7 +21,7 @@ class SHRECLoader(data.Dataset):
         self.inputs_type = inputs_type
         self.framerate = framerate
         self.inputs_list = self.get_inputs_list()
-        self.prefix = "../dataset/SHREC2017/gesture_{}/finger_{}/subject_{}/essai_{}"
+        self.prefix = "../dataset/Processed_HandGestureDataset_SHREC2017/gesture_{}/finger_{}/subject_{}/essai_{}"
         self.r = re.compile('[ \t\n\r:]+')
         print(len(self.inputs_list))
         if phase == "train":
@@ -34,7 +34,7 @@ class SHRECLoader(data.Dataset):
         label28 = int(splitLine[-3]) - 1
         # label14 = int(splitLine[-4]) - 1
         input_data = np.load(
-            insert(self.prefix.format(splitLine[0], splitLine[1], splitLine[2], splitLine[3]), "Processed_", 11)
+            self.prefix.format(splitLine[0], splitLine[1], splitLine[2], splitLine[3])
             + "/pts_label.npy")[:, :, :7]
         input_data = input_data[self.key_frame_sampling(len(input_data), self.framerate)]
         for i in range(self.framerate):
@@ -44,7 +44,7 @@ class SHRECLoader(data.Dataset):
         return input_data, label28, self.inputs_list[index]
 
     def get_inputs_list(self):
-        prefix = "../dataset/SHREC2017"
+        prefix = "../dataset/Processed_HandGestureDataset_SHREC2017"
         if self.phase == "train":
             inputs_path = prefix + "/train_gestures.txt"
         if self.phase == "test":

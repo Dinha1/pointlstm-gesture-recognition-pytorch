@@ -35,7 +35,7 @@ class Stat(object):
         pred = pred.t()
         correct = pred.eq(target.view(1, -1).expand_as(pred))
         for k in topk:
-            correct_k = correct[:k].view(-1).float().sum(0)
+            correct_k = correct[:k].contiguous().view(-1).float().sum(0)
             self.correct_k_cnt[str(k)] += correct_k
 
     def plot_confusion_matrix(self, save_path=None, normalize=True, title='Confusion matrix',
